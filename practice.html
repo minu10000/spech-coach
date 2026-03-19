@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>스피치코치 | 연습</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">🎤 스피치코치</div>
+        <div class="nav-links">
+            <a href="index.html">홈</a>
+            <a href="practice.html" class="active">연습</a>
+            <a href="stats.html">통계</a>
+            <a href="feedback.html">AI 피드백</a>
+        </div>
+    </nav>
+
+    <section class="practice-page">
+        <div class="container">
+            <h1 class="page-title">실시간 연습</h1>
+            
+            <div class="recording-card">
+                <div class="timer-display" id="timer">00:00</div>
+                
+                <div class="status-indicator" id="status">
+                    <span class="status-dot"></span>
+                    <span class="status-text">준비 완료</span>
+                </div>
+
+                <div class="controls">
+                    <button class="btn-record" id="startBtn" onclick="startRecording()">
+                        <span class="btn-icon">●</span>
+                        <span>녹음 시작</span>
+                    </button>
+                    <button class="btn-stop" id="stopBtn" onclick="stopRecording()" disabled>
+                        <span class="btn-icon">■</span>
+                        <span>녹음 종료</span>
+                    </button>
+                </div>
+
+                <div class="transcript-box">
+                    <div class="transcript-header">
+                        <span>📝</span>
+                        <span>음성 변환</span>
+                    </div>
+                    <div class="transcript-content" id="transcript">
+                        <p class="placeholder">녹음을 시작하면 말한 내용이 여기에 표시됩니다...</p>
+                    </div>
+                </div>
+
+                <div class="results-box" id="resultBox" style="display: none;">
+                    <h3>📊 분석 결과</h3>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <span class="stat-label">총 시간</span>
+                            <span class="stat-value" id="totalTime">0 초</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">발화 시간</span>
+                            <span class="stat-value" id="speakingTime">0 초</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">침묵 시간</span>
+                            <span class="stat-value" id="silenceTime">0 초</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">침묵 비율</span>
+                            <span class="stat-value" id="silenceRate">0%</span>
+                        </div>
+                    </div>
+                    <div class="feedback-box" id="feedbackBox">
+                        <div class="feedback-icon">💡</div>
+                        <div class="feedback-text" id="feedbackText"></div>
+                    </div>
+                    <button class="btn-save" onclick="saveResult()">💾 결과 저장</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <p>&copy; 2026 스피치코치. All rights reserved.</p>
+    </footer>
+
+    <script src="js/practice.js"></script>
+</body>
+</html>

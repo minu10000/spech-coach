@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>스피치코치 | 통계</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        .stats-page {
+            padding: 3rem 5%;
+            min-height: 70vh;
+            background: linear-gradient(135deg, #f0f9ff 0%, #fff1f2 100%);
+        }
+        .stats-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #6366f1 0%, #ec4899 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+        .page-subtitle {
+            color: #64748b;
+            font-size: 1.1rem;
+        }
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        .summary-card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .summary-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+        }
+        .summary-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        .summary-label {
+            font-size: 1rem;
+            color: #64748b;
+            margin-bottom: 0.75rem;
+            font-weight: 500;
+        }
+        .summary-value {
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #6366f1 0%, #ec4899 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .records-section {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid #f1f5f9;
+        }
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #1e293b;
+        }
+        .btn-clear-all {
+            background: #fee2e2;
+            color: #dc2626;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn-clear-all:hover {
+            background: #fecaca;
+        }
+        .records-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        .record-card {
+            background: #f8fafc;
+            border-radius: 15px;
+            padding: 2rem;
+            border: 2px solid #e2e8f0;
+            transition: all 0.3s;
+        }
+        .record-card:hover {
+            border-color: #6366f1;
+            box-shadow: 0 5px 20px rgba(99, 102, 241, 0.1);
+        }
+        .record-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+        }
+        .record-date {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #1e293b;
+        }
+        .record-badges {
+            display: flex;
+            gap: 0.75rem;
+        }
+        .badge {
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        .badge-time {
+            background: #dbeafe;
+            color: #2563eb;
+        }
+        .badge-rate {
+            background: #dcfce7;
+            color: #16a34a;
+        }
+        .badge-rate.warning {
+            background: #fef3c7;
+            color: #d97706;
+        }
+        .record-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .record-stat {
+            background: white;
+            padding: 1.25rem;
+            border-radius: 12px;
+            text-align: center;
+        }
+        .record-stat-label {
+            font-size: 0.9rem;
+            color: #64748b;
+            margin-bottom: 0.5rem;
+        }
+        .record-stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #6366f1;
+        }
+        .record-transcript {
+            background: white;
+            padding: 1.25rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            max-height: 150px;
+            overflow-y: auto;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #475569;
+        }
+        .record-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+        }
+        .btn-action {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn-view {
+            background: #6366f1;
+            color: white;
+        }
+        .btn-view:hover {
+            background: #4f46e5;
+        }
+        .btn-delete {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+        .btn-delete:hover {
+            background: #fecaca;
+        }
+        .no-records {
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+        .no-records-icon {
+            font-size: 5rem;
+            margin-bottom: 1.5rem;
+            opacity: 0.5;
+        }
+        .no-records p {
+            font-size: 1.2rem;
+            color: #64748b;
+            margin-bottom: 2rem;
+        }
+        @media (max-width: 768px) {
+            .summary-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+            }
+            .summary-card {
+                padding: 1.5rem;
+            }
+            .summary-value {
+                font-size: 1.8rem;
+            }
+            .record-stats-grid {
+                grid-template-columns: 1fr;
+            }
+            .section-header {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+            .record-header {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">🎤 스피치코치</div>
+        <div class="nav-links">
+            <a href="index.html">홈</a>
+            <a href="practice.html">연습</a>
+            <a href="stats.html" class="active">통계</a>
+            <a href="feedback.html">AI 피드백</a>
+        </div>
+    </nav>
+
+    <section class="stats-page">
+        <div class="stats-container">
+            <div class="page-header">
+                <h1 class="page-title">📊 내 통계</h1>
+                <p class="page-subtitle">연습 기록을 확인하고 성장하세요</p>
+            </div>
+
+            <div class="summary-grid">
+                <div class="summary-card">
+                    <div class="summary-icon">📝</div>
+                    <div class="summary-label">총 연습 횟수</div>
+                    <div class="summary-value" id="totalPractices">0 회</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-icon">⏱</div>
+                    <div class="summary-label">총 연습 시간</div>
+                    <div class="summary-value" id="totalTime">0 분</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-icon">📈</div>
+                    <div class="summary-label">평균 침묵 비율</div>
+                    <div class="summary-value" id="avgSilenceRate">0%</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-icon">🏆</div>
+                    <div class="summary-label">최고 기록</div>
+                    <div class="summary-value" id="bestRecord">-</div>
+                </div>
+            </div>
+
+            <div class="records-section">
+                <div class="section-header">
+                    <h2 class="section-title">📋 연습 기록</h2>
+                    <button class="btn-clear-all" onclick="clearAllRecords()">🗑 전체 삭제</button>
+                </div>
+                <div class="records-list" id="recordsList">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <p>&copy; 2026 스피치코치. All rights reserved.</p>
+    </footer>
+
+    <script src="js/stats.js"></script>
+</body>
+</html>

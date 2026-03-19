@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>스피치코치 | AI 피드백</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        .feedback-page {
+            padding: 3rem 5%;
+            min-height: 70vh;
+            background: linear-gradient(135deg, #f0f9ff 0%, #fff1f2 100%);
+        }
+        .feedback-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .feedback-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        .feedback-title {
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #6366f1 0%, #ec4899 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+        .overall-score {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+        .score-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6366f1 0%, #ec4899 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
+        }
+        .score-number {
+            font-size: 3rem;
+            font-weight: 900;
+            color: white;
+        }
+        .score-label {
+            font-size: 1.2rem;
+            color: #64748b;
+            margin-bottom: 1rem;
+        }
+        .score-message {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #1e293b;
+        }
+        .feedback-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        .feedback-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+        .feedback-card-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #f1f5f9;
+        }
+        .feedback-card-icon {
+            font-size: 2.5rem;
+        }
+        .feedback-card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1e293b;
+        }
+        .feedback-item {
+            margin-bottom: 1.5rem;
+            padding: 1.25rem;
+            background: #f8fafc;
+            border-radius: 12px;
+            border-left: 4px solid #6366f1;
+        }
+        .feedback-item.warning {
+            border-left-color: #f59e0b;
+            background: #fffbeb;
+        }
+        .feedback-item.success {
+            border-left-color: #10b981;
+            background: #f0fdf4;
+        }
+        .feedback-item-title {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: #1e293b;
+        }
+        .feedback-item-desc {
+            color: #64748b;
+            line-height: 1.6;
+            margin-bottom: 0.75rem;
+        }
+        .feedback-item-tip {
+            background: white;
+            padding: 0.75rem;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            color: #475569;
+            font-style: italic;
+        }
+        .progress-bar {
+            background: #e2e8f0;
+            height: 10px;
+            border-radius: 5px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #6366f1 0%, #ec4899 100%);
+            transition: width 0.5s ease;
+        }
+        .action-items {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            margin-bottom: 2rem;
+        }
+        .action-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: #1e293b;
+        }
+        .action-list {
+            list-style: none;
+            padding: 0;
+        }
+        .action-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            background: #f8fafc;
+            border-radius: 12px;
+            transition: transform 0.3s;
+        }
+        .action-item:hover {
+            transform: translateX(5px);
+            background: #f1f5f9;
+        }
+        .action-icon {
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+        .action-text {
+            color: #475569;
+            line-height: 1.6;
+        }
+        .btn-back {
+            background: linear-gradient(135deg, #6366f1 0%, #ec4899 100%);
+            color: white;
+            border: none;
+            padding: 1rem 3rem;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: block;
+            margin: 2rem auto 0;
+        }
+        .btn-back:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.4);
+        }
+        @media (max-width: 768px) {
+            .feedback-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">🎤 스피치코치</div>
+        <div class="nav-links">
+            <a href="index.html">홈</a>
+            <a href="practice.html">연습</a>
+            <a href="stats.html">통계</a>
+            <a href="feedback.html" class="active">AI 피드백</a>
+        </div>
+    </nav>
+
+    <section class="feedback-page">
+        <div class="feedback-container">
+            <div class="feedback-header">
+                <h1 class="feedback-title">🤖 AI 피드백</h1>
+                <p class="page-subtitle">당신의 발표를 분석했어요</p>
+            </div>
+
+            <div class="overall-score">
+                <div class="score-circle">
+                    <div class="score-number" id="overallScore">0</div>
+                </div>
+                <div class="score-label">종합 점수</div>
+                <div class="score-message" id="scoreMessage">분석 중...</div>
+            </div>
+
+            <div class="feedback-grid">
+                <div class="feedback-card">
+                    <div class="feedback-card-header">
+                        <div class="feedback-card-icon">🗣️</div>
+                        <div class="feedback-card-title">발음 & 명확성</div>
+                    </div>
+                    <div id="pronunciationFeedback"></div>
+                </div>
+
+                <div class="feedback-card">
+                    <div class="feedback-card-header">
+                        <div class="feedback-card-icon">⏱</div>
+                        <div class="feedback-card-title">말하기 속도</div>
+                    </div>
+                    <div id="speedFeedback"></div>
+                </div>
+
+                <div class="feedback-card">
+                    <div class="feedback-card-header">
+                        <div class="feedback-card-icon">🤫</div>
+                        <div class="feedback-card-title">침묵 & 공백</div>
+                    </div>
+                    <div id="silenceFeedback"></div>
+                </div>
+
+                <div class="feedback-card">
+                    <div class="feedback-card-header">
+                        <div class="feedback-card-icon">💬</div>
+                        <div class="feedback-card-title">언어 습관</div>
+                    </div>
+                    <div id="habitFeedback"></div>
+                </div>
+            </div>
+
+            <div class="action-items">
+                <h3 class="action-title">🎯 이번 주 연습 목표</h3>
+                <ul class="action-list" id="actionList"></ul>
+            </div>
+
+            <button class="btn-back" onclick="location.href='practice.html'">다시 연습하기</button>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <p>&copy; 2026 스피치코치. All rights reserved.</p>
+    </footer>
+
+    <script src="js/feedback.js"></script>
+</body>
+</html>
